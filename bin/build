@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-docker build . -t johnmcconnell/lein
+if [ -z "$TRAVIS_TAG" ]
+then
+  docker build . -t johnmcconnell/lein
+else
+  docker build . -t johnmcconnell/lein:$TRAVIS_TAG
+fi
+
