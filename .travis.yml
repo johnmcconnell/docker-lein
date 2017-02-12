@@ -1,0 +1,23 @@
+sudo: required
+
+language: generic
+
+env:
+  global:
+    - secure: "fNTUDwK74+QaUvho0mLnbe3irU2nSOn6Bl6b4nhbXsVvtTHjOYC67ZIhKBCnvOPONYHClBV83hRX1nhypOMgQz9BL5IwJBBoi9G02CwDgNuZZU07T3Jvt7V906UNl4JB2ASPUMHjY4BSnoELvbuqHbxRUFiSgyIvBRB51tcZYrO5GC4/Dqp0inCU1BFu+cro06741R4lfDgMjcxtS22eCy8fY7cZLgh6fwSq/MiB0Ff5PaIZ9GmAQ7cWIWHWGCS3s+cJRrfYWT51/vWKiPs7nPuo5dl6FJrQK4vqMEzHZ1JzRPABvKP6Griyj7VCYTMS9QTR7XNsY4Lhv5c9HxZsW/wj9BfLYFimoPBk9RuVad1w/lEsOn7ANzZKL++G2eNZcsNKRwluJ6/tXd5a8+sW7cK06zTfXlj7fkzpZ0kTBs2jBFAVQUSHktmNVp8PW05PPdtNM50K7N4t4SKZITTfy9paKPMaBTrfofsQlLJ1EIOLR9ywiuchZtm/gs1X1FaCpEWsdRrq4T30r3qGaXx//BlyI3lY7RwwC1f9MQ1WEWnLBZoClxAmXzJNYbf8z1BpU2siXZkD7DKq9Ln9qFKuXKMHamANmi3NnpekQb6/Zbt5NOU2d65JvOZMnHDgUQoLZJ/TOwmgaq1lbDdouDJ040pfCfNDac7/Lrcz0tPS2/Y="
+    - secure: "id0+UShwZsHMCcdf+vyxuMGt144qErvTjxlIgcuqkA9NrlCt6EcGjPXJ9IGMz7J/vjXrkhBL2ZTWFb6mZKG1L4BQp4nVb/xr2i9CWvwWPlCpnNpZDLYCHpHWnut1YEWCauwCaTYy/1yrxqI8CwfgY83dqafcrb7zav0YlwoJPP0o09GRfYd61NrC5/AREmm8VBdqixlAmkL73JGfbkAhbkJvPm4aJLOUFsPJfQHJhf78zMa9FWL3OmZGnDFpDB0OhOWT7S1WynUrmhB325miYKruK7npTfI663FWkV3nhoEbSd5jdw522NV0Apvy+GCF/GKxKk43hbsSA56E4I1Y7Ew0XvKekdR0S1BxGnyB7y87Ke4pe9O+79dgqRZiMhcLRbd8iOhzc5ZJAXxRZszMU+YcADUsRp7Gzzb3rS961J9X6rwgn545fW+aga+Cia6SR6WBGlpVL7iF66yPrn9zJlbwBBwjeKUHKsZhVwhK2Pf+qQVVgbrLSA8DvIfw4S7rrQ3dPkmy5W5cdNNuLjiS1B555iFkaqoWhYs9ZNPel3rbvgxXjsZO1zJMcCHdA7JPcbw9ay0qLo91uD8d7LoEQ8+9o57ER1F85jk+H9m83Df5i/cc0TlW16aSn99/dj/qHiI0GiuJksAiQqPBN4CSr0K7kfBmOizYOk3j1J11xmM="
+
+services:
+  - docker
+
+script:
+  - ./bin/build
+
+after_success:
+  - export $REPO=lein
+  - if [ "$TRAVIS_BRANCH" == "master" ] || [ ! -z "$TRAVIS_TAG"]
+    then
+      ./bin/build ;
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+      docker push "johnmcconnell/$REPO" ;
+    fi
