@@ -1,2 +1,2 @@
 # docker-lein
-Docker image for leinengen
+Docker image for leiningen
